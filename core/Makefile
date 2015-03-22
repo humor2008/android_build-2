@@ -972,9 +972,17 @@ systemimage-squisher: $(INTERNAL_SYSTEMIMAGE_FILES)
 
 .PHONY: systemimage-squisher
 
-FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS) systemimage-squisher
+ifneq ($(and $(CHANGELOG_SCRIPT),$(IS_RELEASED_BUILD)),)
+build-changelog: $(INTERNAL_SYSTEMIMAGE_FILES)
+	@echo -e ${CL_YLW}"Generating Changelog"${CL_RST}
+	$(hide) $(CHANGELOG_SCRIPT) $@
+
+.PHONY: build-changelog
+
+FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS) systemimage-squisher build-changelog
 else
-FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS)
+FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS) systemimage-squisher
+endif
 endif
 
 # -----------------------------------------------------------------
