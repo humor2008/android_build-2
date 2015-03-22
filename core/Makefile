@@ -965,25 +965,21 @@ INTERNAL_SYSTEMIMAGE_FILES := $(filter $(TARGET_OUT)/%, \
     $(PDK_FUSION_SYSIMG_FILES) \
     $(RECOVERY_RESOURCE_ZIP))
 
-ifdef SQUISHER_SCRIPT
 systemimage-squisher: $(INTERNAL_SYSTEMIMAGE_FILES)
+ifdef SQUISHER_SCRIPT
 	@echo -e ${CL_YLW}"Optimizing PNGs to Shrink ROM Size!"${CL_RST}
 	$(hide) APKCERTS=$(APKCERTS_FILE) $(SQUISHER_SCRIPT) $@
-
+endif
 .PHONY: systemimage-squisher
 
-ifneq ($(and $(CHANGELOG_SCRIPT),$(IS_RELEASED_BUILD)),)
 build-changelog: $(INTERNAL_SYSTEMIMAGE_FILES)
+ifneq ($(and $(CHANGELOG_SCRIPT),$(IS_RELEASED_BUILD)),)
 	@echo -e ${CL_YLW}"Generating Changelog"${CL_RST}
 	$(hide) $(CHANGELOG_SCRIPT) $@
-
+endif
 .PHONY: build-changelog
 
 FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS) systemimage-squisher build-changelog
-else
-FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS) systemimage-squisher
-endif
-endif
 
 # -----------------------------------------------------------------
 # installed file list
