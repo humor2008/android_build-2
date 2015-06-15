@@ -136,7 +136,7 @@ OPTIONS.block_based = False
 OPTIONS.updater_binary = None
 OPTIONS.oem_source = None
 OPTIONS.fallback_to_full = True
-OPTIONS.backuptool = False
+OPTIONS.backuptool = True
 OPTIONS.override_device = 'auto'
 OPTIONS.recovery = False
 
@@ -561,6 +561,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
   else if get_stage("%(bcb_dev)s") == "3/3" then
   """ % bcb_dev)
 
+  script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
   device_specific.FullOTA_InstallBegin()
 
   if OPTIONS.backuptool:
@@ -575,6 +576,11 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   system_progress = 0.75
 
+  if OPTIONS.wipe_user_data:
+    system_progress -= 0.1
+  if HasVendorPartition(input_zip):
+    system_progress -= 0.1
+    
   script.Print("******************************************")
   script.Print("                                   /\ .___")
   script.Print("  ______ ___________   ______  _  _)/_| _/")
@@ -587,14 +593,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
   device = GetBuildProp("ro.product.device", OPTIONS.info_dict)
   model = GetBuildProp("ro.product.model", OPTIONS.info_dict)
   modver = GetBuildProp("ro.modversion", OPTIONS.info_dict)
-  script.Print("   Device: %s (%s)"%(model, device))
-  script.Print("   Version: %s"%(modver)); 
-  
-  
-  if OPTIONS.wipe_user_data:
-    system_progress -= 0.1
-  if HasVendorPartition(input_zip):
-    system_progress -= 0.1
+  script.Print("Device: %s (%s)"%(model, device))
+  script.Print("Version: %s"%(modver)); 
 
   if "selinux_fc" in OPTIONS.info_dict:
     WritePolicyConfig(OPTIONS.info_dict["selinux_fc"], output_zip)
@@ -679,13 +679,11 @@ def WriteFullOTAPackage(input_zip, output_zip):
                    ""+input_zip.read("SYSTEM/addon.d/UPDATE-SuperSU.zip"))
     script.Mount("/system")
     script.FlashSuperSU()
-    script.Unmount("/system")
   else:
     script.Print("Flashing SuperSU...")
     common.ZipWriteStr(output_zip, "supersu/supersu.zip",
                    ""+input_zip.read("SYSTEM/addon.d/UPDATE-SuperSU.zip"))
-    script.FlashSuperSU()
-    script.Unmount("/system")  
+    script.FlashSuperSU()  
 
   script.ShowProgress(0.05, 5)
   script.Print("Flashing kernel...")
