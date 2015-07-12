@@ -1572,21 +1572,9 @@ bacon: otapackage
 ifneq ($(TARGET_CUSTOM_RELEASETOOL),)
        $(error TARGET_CUSTOM_RELEASETOOL is deprecated)
 endif
-<<<<<<< HEAD
 	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(SCREWD_TARGET_PACKAGE)
 	$(hide) $(MD5SUM) $(SCREWD_TARGET_PACKAGE) > $(SCREWD_TARGET_PACKAGE).md5sum
-ifeq ($(USE_PREBUILT_CHROMIUM),1)
-ifneq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
-	@echo "Running Chromium prebuilt setup script..."
-	$(hide) . $(TOPDIR)vendor/screwd/utils/chromium_prebuilt.sh $(TOP)
-endif
-endif
 	@echo -e ${CL_CYN}"Package Complete: $(SCREWD_TARGET_PACKAGE)"${CL_RST}
-=======
-       $(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(PA_TARGET_PACKAGE)
-       $(hide) $(MD5SUM) $(PA_TARGET_PACKAGE) > $(PA_TARGET_PACKAGE).md5sum
-       @echo -e ${CL_CYN}"Package Complete: $(PA_TARGET_PACKAGE)"${CL_RST}
->>>>>>> parent of 56d96ae... build: Add chromium prebuilt support to envsetup.sh && The core Makefile
 
 endif    # recovery_fstab is defined
 endif    # TARGET_NO_KERNEL != true
