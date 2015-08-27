@@ -479,6 +479,8 @@ function add_lunch_combo()
     LUNCH_MENU_CHOICES=(${LUNCH_MENU_CHOICES[@]} $new_combo)
 }
 
+add_lunch_combo aosp_arm-eng
+
 function print_lunch_menu()
 {
     local uname=$(uname)
