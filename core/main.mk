@@ -315,14 +315,14 @@ enable_target_debugging := true
 tags_to_install :=
 ifneq (,$(user_variant))
   # Target is secure in user builds.
-  ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=1
+  ADDITIONAL_DEFAULT_PROPERTIES += ro.secure=0
 
   ifeq ($(user_variant),userdebug)
     # Pick up some extra useful tools
     tags_to_install += debug
   else
     # Disable debugging in plain user builds.
-    enable_target_debugging :=
+    enable_target_debugging := true
   endif
 
   # Turn on Dalvik preoptimization for user builds, but only if not
@@ -332,7 +332,7 @@ ifneq (,$(user_variant))
     ifeq ($(user_variant),user)
       ifeq ($(HOST_OS),linux)
         # TODO: turn on WITH_DEXPREOPT for libart user builds.
-        # WITH_DEXPREOPT := false
+        # WITH_DEXPREOPT := true
       endif
     endif
   endif
@@ -365,7 +365,6 @@ endif # !enable_target_debugging
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 tags_to_install := debug eng
-WITH_DEXPREOPT := false
 ifneq ($(filter ro.setupwizard.mode=ENABLED, $(call collapse-pairs, $(ADDITIONAL_BUILD_PROPERTIES))),)
   # Don't require the setup wizard on eng builds
   ADDITIONAL_BUILD_PROPERTIES := $(filter-out ro.setupwizard.mode=%,\
