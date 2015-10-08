@@ -181,7 +181,7 @@ include $(BUILD_SYSTEM)/device.mk
 
 # A CM build needs only the CM product makefiles.
 ifneq ($(SCREWD_BUILD),)
-  all_product_configs := $(shell ls vendor/screwd/products/screwd_$(SCREWD_BUILD).mk)
+  all_product_configs := $(shell ls vendor/screwd/products/screwd$(SCREWD_BUILD).mk)
 else
   ifneq ($(strip $(TARGET_BUILD_APPS)),)
   # An unbundled app build needs only the core product makefiles.
