@@ -72,12 +72,12 @@ function check_product()
         return
     fi
 
-    if (echo -n $1 | grep -q -e "^nexus_") ; then
-       CUSTOM_BUILD=$(echo -n $1 | sed -e 's/^nexus_//g')
+    if (echo -n $1 | grep -q -e "^screwd_") ; then
+       SCREWD_BUILD=$(echo -n $1 | sed -e 's/^screwd//g')
     else
-       CUSTOM_BUILD=
+       SCREWD_BUILD=
     fi
-    export CUSTOM_BUILD
+    export SCREWD_BUILD
 
         TARGET_PRODUCT=$1 \
         TARGET_BUILD_VARIANT= \
@@ -532,7 +532,7 @@ function breakfast()
     local variant=$2
     CUSTOM_DEVICES_ONLY="true"
     unset LUNCH_MENU_CHOICES
-    for f in `/bin/ls vendor/nexus/vendorsetup.sh 2> /dev/null`
+    for f in `/bin/ls vendor/screwd/vendorsetup.sh 2> /dev/null`
         do
             echo "including $f"
             . $f
@@ -548,11 +548,11 @@ function breakfast()
             # A buildtype was specified, assume a full device name
             lunch $target
         else
-            # This is probably just the nexus model name
+            # This is probably just the screwd model name
             if [ -z "$variant" ]; then
                 variant="userdebug"
             fi
-            lunch nexus_$target-$variant
+            lunch screwd_$target-$variant
         fi
     fi
     return $?

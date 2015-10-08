@@ -180,8 +180,8 @@ include $(BUILD_SYSTEM)/product.mk
 include $(BUILD_SYSTEM)/device.mk
 
 # A CM build needs only the CM product makefiles.
-ifneq ($(CUSTOM_BUILD),)
-  all_product_configs := $(shell ls vendor/nexus/products/nexus_$(CUSTOM_BUILD).mk)
+ifneq ($(SCREWD_BUILD),)
+  all_product_configs := $(shell ls vendor/screwd/products/screwd_$(SCREWD_BUILD).mk)
 else
   ifneq ($(strip $(TARGET_BUILD_APPS)),)
   # An unbundled app build needs only the core product makefiles.
@@ -192,9 +192,9 @@ else
     # files in the tree.
     all_product_configs := $(get-all-product-makefiles)
   endif # TARGET_BUILD_APPS
-endif # CUSTOM_BUILD
+endif # SCREWD_BUILD
 
-ifeq ($(CUSTOM_BUILD),)
+ifeq ($(SCREWD_BUILD),)
 # Find the product config makefile for the current product.
 # all_product_configs consists items like:
 # <product_name>:<path_to_the_product_makefile>
