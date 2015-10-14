@@ -582,6 +582,21 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     system_progress -= 0.1
   if HasVendorPartition(input_zip):
     system_progress -= 0.1
+    
+  script.Print("******************************************")
+  script.Print("                                   /\ .___")
+  script.Print("  ______ ___________   ______  _  _)/_| _/")
+  script.Print(" /  ___// ___\_  __ \_/ __ \ \/ \/ / __ | ")
+  script.Print(" \___ \\  \___|  | \/\  ___/\     / /_/ | ")
+  script.Print("/____  >\___  >__|    \___  >\/\_/\____ | ")
+  script.Print("     \/     \/            \/           \/ ")
+  script.Print("  ")
+  script.Print("******************************************")
+  device = GetBuildProp("ro.product.device", OPTIONS.info_dict)
+  model = GetBuildProp("ro.product.model", OPTIONS.info_dict)
+  modver = GetBuildProp("ro.modversion", OPTIONS.info_dict)
+  script.Print("Device: %s (%s)"%(model, device))
+  script.Print("Version: %s"%(modver)); 
 
   if "selinux_fc" in OPTIONS.info_dict:
     WritePolicyConfig(OPTIONS.info_dict["selinux_fc"], output_zip)
