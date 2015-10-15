@@ -96,7 +96,8 @@ LOCAL_DISABLE_STRICT := \
 	ip \
 	libc_nomalloc \
 	linker \
-	fio
+	fio \
+	tcpdump \
 
 LOCAL_FORCE_DISABLE_STRICT := \
 	libziparchive-host \
