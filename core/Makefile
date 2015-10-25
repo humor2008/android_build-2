@@ -1592,9 +1592,12 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   -no_prereq \
 	   -p $(HOST_OUT) \
 	   -k $(KEY_CERT_PAIR) \
-	   --override_device=$(override_device) \
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
+ifneq ($(TARGET_CUSTOM_RELEASETOOL),)
+	@echo "Running releasetool"
+	$(TARGET_CUSTOM_RELEASETOOL)
+endif
 
 .PHONY: otapackage bacon bootzip
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
@@ -1605,12 +1608,6 @@ bootzip: bootimage
 	   $(TARGET_DEVICE)
 
 bacon: otapackage
-ifneq ($(TARGET_CUSTOM_RELEASETOOL),)
-	@echo "Running releasetool"
-	$(hide) $(TARGET_CUSTOM_RELEASETOOL)
-else
-	$(hide) ./vendor/screwd/tools/squisher
-endif
 
 	$(hide) $(MD5SUM) $(INTERNAL_OTA_PACKAGE_TARGET) > $(INTERNAL_OTA_PACKAGE_TARGET).md5sum
 	@echo -e ${CL_CYN}"=============== $$(echo $(TARGET_PRODUCT) | sed 's/\([a-z]\)\([a-zA-Z0-9]*\)/\u\1\2/g' | cut -d'_' -f1) OTA package: COMPLETE ==============="${CL_RST}
