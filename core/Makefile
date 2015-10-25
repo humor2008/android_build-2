@@ -1569,12 +1569,6 @@ INTERNAL_OTA_PACKAGE_TARGET := $(PRODUCT_OUT)/$(TARGET_PRODUCT)-$(SCREWD_VERSION
 
 $(INTERNAL_OTA_PACKAGE_TARGET): KEY_CERT_PAIR := $(DEFAULT_KEY_CERT_PAIR)
 
-ifeq ($(TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT),)
-    OTA_FROM_TARGET_SCRIPT := ./build/tools/releasetools/ota_from_target_files
-else
-    OTA_FROM_TARGET_SCRIPT := $(TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT)
-endif
-
 ifeq ($(TARGET_OTA_ASSERT_DEVICE),)
     $(INTERNAL_OTA_PACKAGE_TARGET): override_device := auto
 else
@@ -1587,17 +1581,14 @@ KERNEL_PATH := $(TARGET_KERNEL_SOURCE)/arch/arm/configs/$(TARGET_KERNEL_CONFIG)
 $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	@echo -e ${CL_YLW}"Package OTA:"${CL_RST}" $@"
 	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(MKBOOTIMG) \
-	   $(OTA_FROM_TARGET_SCRIPT) -v \
+	   ./build/tools/releasetools/ota_from_target_files -v \
 	   --block \
 	   -no_prereq \
 	   -p $(HOST_OUT) \
 	   -k $(KEY_CERT_PAIR) \
+	   --override_device=$(override_device) \
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
-ifneq ($(TARGET_CUSTOM_RELEASETOOL),)
-	@echo "Running releasetool"
-	$(TARGET_CUSTOM_RELEASETOOL)
-endif
 
 .PHONY: otapackage bacon bootzip
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
@@ -1608,6 +1599,10 @@ bootzip: bootimage
 	   $(TARGET_DEVICE)
 
 bacon: otapackage
+ifneq ($(TARGET_CUSTOM_RELEASETOOL),)
+	$(hide) \
+	$(TARGET_CUSTOM_RELEASETOOL)
+endif
 
 	$(hide) $(MD5SUM) $(INTERNAL_OTA_PACKAGE_TARGET) > $(INTERNAL_OTA_PACKAGE_TARGET).md5sum
 	@echo -e ${CL_CYN}"=============== $$(echo $(TARGET_PRODUCT) | sed 's/\([a-z]\)\([a-zA-Z0-9]*\)/\u\1\2/g' | cut -d'_' -f1) OTA package: COMPLETE ==============="${CL_RST}
@@ -1632,16 +1627,10 @@ name := $(name)-img-$(FILE_NAME_TAG)
 
 INTERNAL_UPDATE_PACKAGE_TARGET := $(PRODUCT_OUT)/$(name).zip
 
-ifeq ($(TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT),)
-    IMG_FROM_TARGET_SCRIPT := ./build/tools/releasetools/img_from_target_files
-else
-    IMG_FROM_TARGET_SCRIPT := $(TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT)
-endif
-
 $(INTERNAL_UPDATE_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	@echo -e ${CL_YLW}"Package:"${CL_RST}" $@"
 	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(MKBOOTIMG) \
-	   $(IMG_FROM_TARGET_SCRIPT) -v \
+	   ./build/tools/releasetools/img_from_target_files -v \
 	   -p $(HOST_OUT) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
