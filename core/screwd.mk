@@ -98,6 +98,8 @@ LOCAL_DISABLE_STRICT := \
 	linker \
 	fio \
 	tcpdump \
+    sensors.flounder \
+    libnvvisualizer
 
 LOCAL_FORCE_DISABLE_STRICT := \
 	libziparchive-host \
@@ -121,7 +123,10 @@ LOCAL_FORCE_DISABLE_STRICT := \
 	clatd \
 	ip \
 	libc_nomalloc \
-	linker
+	linker \
+    libc_malloc \
+    sensors.flounder \
+    libnvvisualizer
 
 DISABLE_STRICT := \
 	-fno-strict-aliasing
@@ -174,8 +179,7 @@ GCC_ONLY := \
 	-fgcse-las \
 	-fgcse-sm \
 	-fweb \
-	-ffp-contract=fast \
-	-mvectorize-with-neon-quad
+	-ffp-contract=fast
 
 ##########
 # GRAPHITE
