@@ -591,6 +591,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
       common.ZipWriteStr(output_zip, "system/bin/backuptool.functions",
                      ""+input_zip.read("SYSTEM/bin/backuptool.functions"))
     script.Mount("/system")
+    script.Print("Please wait..running backup")
     script.RunBackup("backup")
     script.Unmount("/system")
 
@@ -613,6 +614,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   device = GetBuildProp("ro.product.device", OPTIONS.info_dict)
   model = GetBuildProp("ro.product.model", OPTIONS.info_dict)
   modver = GetBuildProp("ro.modversion", OPTIONS.info_dict)
+  script.Print(" ")
   script.Print("Device: %s (%s)"%(model, device))
   script.Print("Version: %s"%(modver)); 
 
@@ -685,6 +687,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     if block_based:
       script.Mount("/system")
     script.RunBackup("restore")
+    script.Print("Please wait..restoring backup")
     if block_based:
       script.Unmount("/system")
 
@@ -715,6 +718,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.Mount("/system")
 
   script.UnmountAll()
+  script.Print("Flash Complete!")  
 
   if OPTIONS.wipe_user_data:
     script.ShowProgress(0.1, 10)
