@@ -589,10 +589,6 @@ reboot_now("%(bcb_dev)s", "recovery");
 else if get_stage("%(bcb_dev)s") == "3/3" then
 """ % bcb_dev)
 
-  # Dump fingerprints
-  script.Print("Target: %s" % CalculateFingerprint(
-      oem_props, oem_dict, OPTIONS.info_dict))
-
   script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
   device_specific.FullOTA_InstallBegin()
   
@@ -699,7 +695,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     if block_based:
       script.Mount("/system")
     script.RunBackup("restore")
-    script.Print("Please wait..restoring backup")
+    script.Print("Restoring backup...")
     if block_based:
       script.Unmount("/system")
 
@@ -716,6 +712,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.FlashSuperSU()
 
   script.ShowProgress(0.05, 5)
+  script.Print("Flashing Screwd kernel")
   script.WriteRawImage("/boot", "boot.img")
 
   script.ShowProgress(0.2, 10)
