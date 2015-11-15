@@ -621,7 +621,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("******************************************")
   device = GetBuildProp("ro.product.device", OPTIONS.info_dict)
   model = GetBuildProp("ro.product.model", OPTIONS.info_dict)
-  modver = GetBuildProp("ro.modversion", OPTIONS.info_dict)
+  modver = GetBuildProp("ro.screwd.version", OPTIONS.info_dict)
   script.Print(" ")
   script.Print("Device: %s (%s)"%(model, device))
   script.Print("Version: %s"%(modver)); 
