@@ -60,6 +60,7 @@ NO_OPTIMIZATIONS += \
 	fsck.f2fs \
 	racoon \
 	dex2oatd \
+	libc_tzcode \
 	libbinder \
 	libbypass \
 	libandroid_runtime_32 \
@@ -184,6 +185,7 @@ ifeq ($(GRAPHITE_OPTS),true)
   LOCAL_DISABLE_GRAPHITE := \
 	libinput \
 	dex2oatd \
+	libncurses \
 	libhwui \
 	libandroid_runtime \
 	libsigchain \
@@ -440,6 +442,7 @@ endif
 ifeq ($(ENABLE_PTHREAD),true)
 LOCAL_DISABLE_PTHREAD := \
 	libc_netbsd \
+	libc_tzcode \
 	dex2oatd \
 	libbluetooth_jni_32 \
 	libmmcamera_interface_32 \
@@ -470,6 +473,7 @@ endif
 ifeq ($(ENABLE_GOMP),true)
 LOCAL_DISABLE_GOMP := \
 	dex2oatd \
+	libc_tzcode \
 	libbluetooth_jni_32 \
 	libmmcamera_interface_32 \
 	libmmjpeg_interface_32 \
@@ -535,6 +539,7 @@ endif
 ifeq ($(ENABLE_EXTRAGCC),true)
 LOCAL_DISABLE_EXTRAGCC := \
 	dex2oatd \
+	libc_tzcode \
 	libbluetooth_jni_32 \
 	libmmcamera_interface_32 \
 	libmmjpeg_interface_32 \
@@ -711,6 +716,7 @@ LOCAL_FORCE_DISABLE_STRICT := \
 	libc_bionic_ndk \
 	libc_dns \
 	libc_gdtoa \
+	libc_tzcode \
 	libc_openbsd_ndk \
 	liblog \
 	libc \
@@ -747,7 +753,6 @@ LOCAL_DISABLE_STRICT := \
 	libext2_quota_host \
 	libc_bionic \
 	libc_dns \
-	libc_tzcode \
 	libc_malloc \
 	libc_openbsd_ndk \
 	libc_bionic_ndk \
