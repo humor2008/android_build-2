@@ -733,7 +733,9 @@ LOCAL_FORCE_DISABLE_STRICT := \
 	linker
 
 LOCAL_DISABLE_STRICT := \
+	clatd_test \
 	dex2oatd \
+	libdw \
 	libmmjpeg_interface \
 	mm-qcamera-app_32 \
 	libbluetooth_jni_32 \
