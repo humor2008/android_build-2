@@ -856,6 +856,7 @@ LOCAL_DISABLE_STRICT := \
 	libext2fs \
 	simg2img \
 	simg2img_host \
+	toybox \
 	updater \
 	verity_signer \
 	tzdatacheck \
