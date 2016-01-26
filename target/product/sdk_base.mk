@@ -25,7 +25,6 @@ PRODUCT_PACKAGES := \
 	EmulatorSmokeTests \
 	Fallback \
 	GestureBuilder \
-	Launcher3 \
 	LegacyCamera \
 	librs_jni \
 	LiveWallpapersPicker \
