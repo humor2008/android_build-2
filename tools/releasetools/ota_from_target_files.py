@@ -614,7 +614,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("                                   /\ .___")
   script.Print("  ______ ___________   ______  _  _)/_| _/")
   script.Print(" /  ___// ___\_  __ \_/ __ \ \/ \/ / __ | ")
-  script.Print(" \___ \\  \___|  | \/\  ___/\     / /_/ | ")
+  script.Print(" \___  \  \___|  | \/\  ___/\     / /_/ | ")
   script.Print("/____  >\___  >__|    \___  >\/\_/\____ | ")
   script.Print("     \/     \/            \/           \/ ")
   script.Print("  ")
