@@ -54,6 +54,8 @@ NOOP_BLUETOOTH := \
 
 NO_OPTIMIZATIONS += \
 	pppd \
+	libmcldScript \
+	libmcldMC \
 	libmedia_jni \
 	libmedia_jni_32 \
 	libnfc-nci_32 \
@@ -419,18 +421,18 @@ ifeq ($(CORTEX_TUNINGS),true)
 	libbluetooth_jni_32 \
 	libmmcamera_interface_32 \
 	libmmjpeg_interface_32 \
-	$(NOOP_BLUETOOTH)
+	libmcldSupport \
+	libmcldScript \
+	$(NOOP_BLUETOOTH) \
+	$(NO_OPTIMIZATIONS)
 
-  ifeq ($(filter $(LOCAL_DISABLE_CORTEX), $(LOCAL_MODULE)),)
-   ifdef LOCAL_CONLYFLAGS
-    LOCAL_CONLYFLAGS += -mcpu=cortex-a57 -mtune=cortex-a57
-   else
-    LOCAL_CONLYFLAGS := -mcpu=cortex-a57 -mtune=cortex-a57
-   endif
-   ifdef LOCAL_CPPFLAGS
-    LOCAL_CPPFLAGS += -mcpu=cortex-a57 -mtune=cortex-a57
-   else
-    LOCAL_CPPFLAGS := -mcpu=cortex-a57 -mtune=cortex-a57
+  ifneq ($(strip $(LOCAL_CLANG)),true)
+   ifeq ($(filter $(LOCAL_DISABLE_CORTEX), $(LOCAL_MODULE)),)
+    ifdef LOCAL_CFLAGS_64
+     LOCAL_CFLAGS_64 += -mcpu=cortex-a57.cortex-a53 -mtune=cortex-a57.cortex-a53
+    else
+     LOCAL_CFLAGS_64 := -mcpu=cortex-a57.cortex-a53 -mtune=cortex-a57.cortex-a53
+    endif
    endif
   endif
  endif
