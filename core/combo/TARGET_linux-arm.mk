@@ -126,7 +126,7 @@ endif
 
 # Currently building with GCC 5.x yields to false positives errors
 # This ensures the build is not hatled on the following errors
-ifneq ($(filter $($(combo_2nd_arch_prefix)TARGET_GCC_VERSION), 5.1 5.1.% 5.2),)
+ifneq ($(filter $($(combo_2nd_arch_prefix)TARGET_GCC_VERSION), 5.1 5.1.% 5.2.% 5.3 5.3.% 6.0 6.0.%),)
     TARGET_GLOBAL_CFLAGS += -Wno-array-bounds -Wno-strict-overflow
 endif
 
