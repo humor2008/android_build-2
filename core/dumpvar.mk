@@ -64,46 +64,29 @@ endif # CALLED_FROM_SETUP
 
 ifneq ($(PRINT_BUILD_CONFIG),)
 HOST_OS_EXTRA:=$(shell python -c "import platform; print(platform.platform())")
-$(info ============================================)
-$(info   PLATFORM_VERSION_CODENAME=$(PLATFORM_VERSION_CODENAME))
-$(info   PLATFORM_VERSION=$(PLATFORM_VERSION))
+$(info =======================================================)
+$(info   HOST_ARCH=$(HOST_ARCH))
+$(info   HOST_OS=$(HOST_OS))
+$(info   HOST_BUILD_TYPE=$(HOST_BUILD_TYPE))
+$(info   HOST_OS_EXTRA=$(HOST_OS_EXTRA))
+$(info   OUT_DIR=$(OUT_DIR))
+$(info =======================================================)
+$(info   ANDROID_VERSION_CODENAME=$(PLATFORM_VERSION_CODENAME))
+$(info   ANDROID_VERSION=$(PLATFORM_VERSION))
+$(info   BUILD_ID=$(BUILD_ID))
 $(info   SCREWD_VERSION=$(SCREWD_VERSION))
-$(info   TARGET_PRODUCT=$(TARGET_PRODUCT))
-$(info   TARGET_BUILD_VARIANT=$(TARGET_BUILD_VARIANT))
-$(info   TARGET_BUILD_TYPE=$(TARGET_BUILD_TYPE))
-$(info   TARGET_BUILD_APPS=$(TARGET_BUILD_APPS))
-$(info   TARGET_ARCH=$(TARGET_ARCH))
-$(info   TARGET_ARCH_VARIANT=$(TARGET_ARCH_VARIANT))
-$(info   TARGET_CPU_VARIANT=$(TARGET_CPU_VARIANT))
-$(info   TARGET_GCC_VERSION=$(TARGET_GCC_VERSION))
-$(info   TARGET_NDK_GCC_VERSION=$(TARGET_NDK_GCC_VERSION))
+$(info   PRODUCT=$(TARGET_PRODUCT))
+$(info   BUILD_VARIANT=$(TARGET_BUILD_VARIANT))
+$(info   BUILD_TYPE=$(TARGET_BUILD_TYPE))
+$(info   ARCH=$(TARGET_ARCH))
+$(info   ARCH_VARIANT=$(TARGET_ARCH_VARIANT))
+$(info   CPU_VARIANT=$(TARGET_CPU_VARIANT))
+$(info   GCC_VERSION=$(SM_AND_VERSION))
+$(info   GCC_VERSION_KERNEL=$(SM_KERNEL_VERSION))
 ifeq ($(TARGET_DRAGONTC_VERSION),)
 else
 $(info   CLANG_VERSION=$(DTC_VER))
 endif
-
-ifeq ($(TARGET_ARCH),arm64)
-ifdef TARGET_GCC_VERSION_ARM64
-$(info   TARGET_KERNEL_TOOLCHAIN64=$(TARGET_GCC_VERSION_ARM64))
-endif
-endif
-
-ifneq ($(TARGET_ARCH),arm64)
-ifdef TARGET_GCC_VERSION_ARM
-$(info   TARGET_KERNEL_TOOLCHAIN=$(TARGET_GCC_VERSION_ARM))
-else
-$(info   TARGET_KERNEL_TOOLCHAIN=$(TARGET_GCC_VERSION))
-endif
-endif
-
-$(info   HOST_ARCH=$(HOST_ARCH))
-$(info   HOST_OS=$(HOST_OS))
-$(info   HOST_OS_EXTRA=$(HOST_OS_EXTRA))
-$(info   HOST_BUILD_TYPE=$(HOST_BUILD_TYPE))
-ifeq ($(IS_RELEASED_BUILD),true)
-$(info   IS_RELEASED_BUILD=HELL YEAH!!)
-endif
-$(info   BUILD_ID=$(BUILD_ID))
-$(info   OUT_DIR=$(OUT_DIR))
+$(info   OPTIMIZATIONS=$(GCC_OPTIMIZATION_LEVELS))
 $(info =======================================================)
 endif
