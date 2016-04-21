@@ -968,22 +968,8 @@ INTERNAL_SYSTEMIMAGE_FILES := $(filter $(TARGET_OUT)/%, \
     $(PDK_FUSION_SYSIMG_FILES) \
     $(RECOVERY_RESOURCE_ZIP))
 
-systemimage-squisher: $(INTERNAL_SYSTEMIMAGE_FILES)
-ifdef SQUISHER_SCRIPT
-	@echo -e ${CL_YLW}"Optimizing PNGs to Shrink ROM Size!"${CL_RST}
-	$(hide) APKCERTS=$(APKCERTS_FILE) $(SQUISHER_SCRIPT) $@
-endif
-.PHONY: systemimage-squisher
 
-build-changelog: $(INTERNAL_SYSTEMIMAGE_FILES)
-ifneq ($(and $(CHANGELOG_SCRIPT),$(IS_RELEASED_BUILD)),)
-	@echo -e ${CL_YLW}"Generating Changelog"${CL_RST}
-	$(hide) $(CHANGELOG_SCRIPT) $@
-endif
-.PHONY: build-changelog
-
-FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS) systemimage-squisher build-changelog
-
+FULL_SYSTEMIMAGE_DEPS := $(INTERNAL_SYSTEMIMAGE_FILES) $(INTERNAL_USERIMAGES_DEPS)
 # -----------------------------------------------------------------
 # installed file list
 # Depending on anything that $(BUILT_SYSTEMIMAGE) depends on.
@@ -1630,10 +1616,13 @@ bootzip: bootimage
 	   $(TARGET_DEVICE)
 
 bacon: otapackage
-ifdef FINISHER_SCRIPT
-	@echo -e ${CL_YLW}"Running finisher..."${CL_RST}
-	$(hide) $(FINISHER_SCRIPT) $@
-endif
+
+	$(hide) $(MD5SUM) $(INTERNAL_OTA_PACKAGE_TARGET) > $(INTERNAL_OTA_PACKAGE_TARGET).md5sum
+	@echo -e ${CL_CYN}"=============== $$(echo $(TARGET_PRODUCT) | sed 's/\([a-z]\)\([a-zA-Z0-9]*\)/\u\1\2/g' | cut -d'_' -f1) OTA package: COMPLETE ==============="${CL_RST}
+	@echo -e ${CL_CYN}"ZIP: "${CL_CYN} $$(basename $(INTERNAL_OTA_PACKAGE_TARGET))${CL_RST}
+	@echo -e ${CL_CYN}"MD5: "${CL_CYN}" `cat $(INTERNAL_OTA_PACKAGE_TARGET).md5sum | cut -d ' ' -f 1`"${CL_RST}
+	@echo -e ${CL_CYN}"Size:"${CL_CYN}" `ls -la --si $(INTERNAL_OTA_PACKAGE_TARGET) | cut -d ' ' -f 5`"${CL_RST}
+	@echo -e ${CL_CYN}"============================================================="${CL_RST}
 
 endif    # recovery_fstab is defined
 endif    # TARGET_NO_KERNEL != true
